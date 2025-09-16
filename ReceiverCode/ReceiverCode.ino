@@ -1,24 +1,33 @@
-#include <SoftwareSerial.h>
-#include "rgb_lcd.h"
-#include <Wire.h>
-
-rgb_lcd lcd;
-SoftwareSerial mySerial(7, 6);
+const int RED_PIN = 7;
+const int YELLOW_PIN = 6;
+const int GREEN_PIN = 5;
+const int BUTTON_PIN = 2;
 
 void setup() {
-  Serial.begin(9600);
-  mySerial.begin(9600);
-
-  lcd.begin(16, 2);
-  lcd.print("waiting.....");
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(YELLOW_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+  pinMode(BUTTON_PIN, INPUT);
 }
 
 void loop() {
-  if (mySerial.available() > 0) {
-    String receiveMessage = mySerial.readStringUntil('\n');
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print(receiveMessage);
+  if (digitalRead(BUTTON_PIN) == HIGH) {
+    digitalWrite(RED_PIN, LOW);
+    digitalWrite(YELLOW_PIN, LOW);
+    digitalWrite(GREEN_PIN, LOW);
+  } else {
+    digitalWrite(GREEN_PIN, HIGH);
+    delay(3000);
+    digitalWrite(GREEN_PIN, LOW);
+
+    digitalWrite(YELLOW_PIN, HIGH);
+    delay(1000);
+    digitalWrite(YELLOW_PIN, LOW);
+
+    digitalWrite(RED_PIN, HIGH);
+    delay(3000);
+    digitalWrite(RED_PIN, LOW);
   }
 }
+
 
